@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import "./styles.css";
 import  styled  from "styled-components"
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
@@ -137,6 +136,26 @@ const StyledCardContainer = styled.div`
   margin: 2px
 `;
 
+const StyledDots = styled.div`
+  display: flex;
+  padding: 10px 0;
+  justify-content: center;
+`
+const StyledDot = styled.button`
+  border: none;
+  width: 25px;
+  height: 4px;
+  background: #8595ad45;
+  border-radius: 20px;
+  margin: 0 3px;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  };
+  &.active {
+    background: #0c9;
+  }
+`
 export default function Slider() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -159,21 +178,21 @@ export default function Slider() {
   return (
     <>
     {loaded && instanceRef.current && (
-        <div className="dots">
+        <StyledDots className="dots">
           {[
             ...Array.from(Array(instanceRef.current.track.details.slides.length).keys())
           ].map((idx) => {
             return (
-              <button
+              <StyledDot
                 key={idx}
                 onClick={() => {
                   instanceRef.current?.moveToIdx(idx);
                 }}
-                className={"dot" + (currentSlide === idx ? " active" : "")}
-              ></button>
+                className={(currentSlide === idx ? " active" : "")}
+              ></StyledDot>
             );
           })}
-        </div>
+        </StyledDots>
       )}
       <StyledSlideContainer>
         <StyledSlider ref={sliderRef} className="keen-slider">
@@ -219,16 +238,39 @@ export default function Slider() {
 }
 
 
-function Arrow(props: {
+interface ArrowProps {
   disabled: boolean;
   left?: boolean;
   onClick: (e: any) => void;
-}) {
+}
+
+const StyledArrowIcon = styled.svg`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  fill: #fff;
+  cursor: pointer;
+  &.arrow--disabled {
+    display: none
+  };
+  &.arrow--left {
+    left: 5px;
+  };
+  &.arrow--right {
+    left: auto;
+    right: 5px;
+  };
+`
+
+function Arrow(props: ArrowProps) {
   const disabeld = props.disabled ? " arrow--disabled" : "";
   return (
-    <svg
+    <StyledArrowIcon
       onClick={props.onClick}
-      className={`arrow ${
+      className={`${
         props.left ? "arrow--left" : "arrow--right"
       } ${disabeld}`}
       xmlns="http://www.w3.org/2000/svg"
@@ -240,6 +282,6 @@ function Arrow(props: {
       {!props.left && (
         <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
       )}
-    </svg>
+    </StyledArrowIcon>
   );
 }
