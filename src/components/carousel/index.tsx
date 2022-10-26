@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
@@ -45,7 +45,18 @@ const convertData = [...Array.from(chunks(data, 6))]
 
 export function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0)
-  const [loaded, setLoaded] = useState(false)
+  const [loadedAll, setLoadedAll] = useState(false)
+  const [loaded, setLoaded] = useState<boolean[]>([])
+
+  useEffect(() => {
+    const newLoadedComing = Array(6).fill(true)
+    const new_loaded = [...loaded, ...newLoadedComing]
+    setTimeout(() => {
+      setLoaded(new_loaded)
+    }, 300);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSlide])
+  
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     mode: 'free-snap',
@@ -57,7 +68,7 @@ export function Carousel() {
       setCurrentSlide(slider.track.details.rel)
     },
     created() {
-      setLoaded(true)
+      setLoadedAll(true)
     },
   })
 
@@ -65,7 +76,7 @@ export function Carousel() {
     <StyledCarousel>
       <StyledHeader>
         <StyledTitle>Shahid Originals</StyledTitle>
-        {loaded && instanceRef.current && (
+        {loadedAll && instanceRef.current && (
           <StyledDots className="dots">
             {[
               ...Array.from(
@@ -92,13 +103,13 @@ export function Carousel() {
             <StyledSlide className="keen-slider__slide" key={slideIdx}>
               {slide.map((movie, movieIdx) => (
                 <StyledCardContainer key={movieIdx}>
-                  <MovieCard data={movie} />
+                  <MovieCard data={movie} loaded={loaded[slideIdx*6 + movieIdx]}/>
                 </StyledCardContainer>
               ))}
             </StyledSlide>
           ))}
         </StyledSlider>
-        {loaded && instanceRef.current && (
+        {loadedAll && instanceRef.current && (
           <StyledArrowContainer>
             <Arrow
               left

@@ -29,7 +29,8 @@ type Movie = {
 }
 
 type MovieProps = {
-  data: Movie
+  data: Movie;
+  loaded: boolean;
 }
 
 function IconButton(props: IconButtonProps) {
@@ -127,51 +128,11 @@ function ShareIcon() {
     </svg>
   )
 }
-function BorderIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-    >
-      <defs>
-        <linearGradient
-          id="linearGradient-0.1899680525552403"
-          x1="0%"
-          x2="100%"
-          y1="50%"
-          y2="50%"
-        >
-          <stop offset="0%" stop-color="#0C9"></stop>
-          <stop offset="100%" stop-color="#09F"></stop>
-        </linearGradient>
-      </defs>
-      <g
-        fill="none"
-        fill-opacity="0.4"
-        fill-rule="evenodd"
-        stroke="none"
-        stroke-width="1"
-      >
-        <rect
-          width="31"
-          height="31"
-          x="0.5"
-          y="0.5"
-          fill="#181D25"
-          stroke="url(#linearGradient-0.1899680525552403)"
-          rx="15.5"
-        ></rect>
-      </g>
-    </svg>
-  )
-}
 
-export function MovieCard({ data }: MovieProps) {
+export function MovieCard({ data, loaded }: MovieProps) {
   return (
     <StyledMovieContainer>
-      <StyledThumbnail backgroundUrl={data.thumbnail} />
+      <StyledThumbnail className={!loaded ? "lazy-loading" : ""} backgroundUrl={loaded ? data.thumbnail : ""} />
       <StyledContent>
         <StyledTitle href="/">{data.title}</StyledTitle>
         <StyledDescription>{data.description}</StyledDescription>

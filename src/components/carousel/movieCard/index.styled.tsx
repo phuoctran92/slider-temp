@@ -19,6 +19,9 @@ export const StyledThumbnail = styled.div<ThumbnailProps>`
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 5px;
+  &.lazy-loading {
+    background-color: #272e3a;
+  }
 `
 
 export const StyledContent = styled.div`

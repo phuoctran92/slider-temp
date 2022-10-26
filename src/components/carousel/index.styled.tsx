@@ -4,7 +4,7 @@ export const StyledCarousel = styled.div``
 
 export const StyledCarouselContainer = styled.div`
   position: relative;
-  height: 170px;
+  height: 125px;
 `
 export const StyledSlider = styled.div`
   height: 100%;
@@ -65,10 +65,11 @@ export const StyledArrowContainer = styled.div`
   ${StyledCarousel}:hover & {
     opacity: 100;
   }
+  
 `
 
 export const StyledArrow = styled.div`
-  width: calc(5% / 2 - 5px);
+  width: calc(5% / 2 - 4px);
   background: rgba(24, 29, 37, 0.6);
   height: 100%;
   position: absolute;
