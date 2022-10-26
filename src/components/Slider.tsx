@@ -120,26 +120,47 @@ function* chunks(arr : IMovie[], n : number) {
 }
 
 const convertData = [...Array.from(chunks(data, 6))]
+const StyledSliderContainer = styled.div``
 
 const StyledSlideContainer = styled.div`
   position: relative;
-  // height: 170px;
+  height: 170px;
 `;
 const StyledSlider = styled.div`
   height: 100%;
 `;
+
+const StyledSliderHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: calc(5% / 2);
+  padding-right: calc(5% / 2);
+
+`
+const StyledSliderTitle = styled.p`
+  font-size: 29px;
+  font-weight: 700;
+  color: #fff
+`
 const StyledSlide = styled.div`
   display: flex;
 `;
 const StyledCardContainer = styled.div`
   width: calc(100% / 6);
-  margin: 2px
+  margin: 2px;
 `;
 
 const StyledDots = styled.div`
   display: flex;
   padding: 10px 0;
   justify-content: center;
+  opacity: 0;
+  transition: all 0.3s;
+   -webkit-transition: all 0.3s;
+  ${StyledSliderContainer}:hover & {
+    opacity: 100;
+  }
 `
 const StyledDot = styled.button`
   border: none;
@@ -156,6 +177,16 @@ const StyledDot = styled.button`
     background: #0c9;
   }
 `
+
+const StyledArrowContainer = styled.div`
+  opacity: 0;
+  transition: all 0.3s;
+   -webkit-transition: all 0.3s;
+  ${StyledSliderContainer}:hover & {
+    opacity: 100;
+  }
+`
+
 export default function Slider() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -176,24 +207,30 @@ export default function Slider() {
   });
 
   return (
-    <>
-    {loaded && instanceRef.current && (
-        <StyledDots className="dots">
-          {[
-            ...Array.from(Array(instanceRef.current.track.details.slides.length).keys())
-          ].map((idx) => {
-            return (
-              <StyledDot
-                key={idx}
-                onClick={() => {
-                  instanceRef.current?.moveToIdx(idx);
-                }}
-                className={(currentSlide === idx ? " active" : "")}
-              ></StyledDot>
-            );
-          })}
-        </StyledDots>
-      )}
+    <StyledSliderContainer>
+      <StyledSliderHeader>
+        <StyledSliderTitle>
+          Shahid Originals
+        </StyledSliderTitle>
+        {loaded && instanceRef.current && (
+          <StyledDots className="dots">
+            {[
+              ...Array.from(Array(instanceRef.current.track.details.slides.length).keys())
+            ].map((idx) => {
+              return (
+                <StyledDot
+                  key={idx}
+                  onClick={() => {
+                    instanceRef.current?.moveToIdx(idx);
+                  }}
+                  className={(currentSlide === idx ? " active" : "")}
+                ></StyledDot>
+              );
+            })}
+          </StyledDots>
+        )}
+      </StyledSliderHeader>
+    
       <StyledSlideContainer>
         <StyledSlider ref={sliderRef} className="keen-slider">
           {
@@ -211,7 +248,7 @@ export default function Slider() {
           }
         </StyledSlider>
         {loaded && instanceRef.current && (
-          <>
+          <StyledArrowContainer>
             <Arrow
               left
               onClick={(e: any) =>
@@ -229,11 +266,11 @@ export default function Slider() {
                 instanceRef.current.track.details.slides.length - 1
               }
             />
-          </>
+          </StyledArrowContainer>
         )}
       </StyledSlideContainer>
       
-    </>
+    </StyledSliderContainer>
   );
 }
 
@@ -244,11 +281,14 @@ interface ArrowProps {
   onClick: (e: any) => void;
 }
 
-const StyledArrowIcon = styled.svg`
-  width: 30px;
-  height: 30px;
+const StyledArrow = styled.div`
+  width: calc(5% / 2 - 5px);
+  background: rgba(24,29,37,.6);
+  height: 100%;
   position: absolute;
   top: 50%;
+  display: flex;
+  align-items: center;
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
   fill: #fff;
@@ -257,31 +297,39 @@ const StyledArrowIcon = styled.svg`
     display: none
   };
   &.arrow--left {
-    left: 5px;
+    left: 0px;
+    justify-content: flex-start;
   };
   &.arrow--right {
     left: auto;
-    right: 5px;
+    right: 0px;
+    justify-content: flex-end;
   };
+  & svg {
+    width: 25px
+  }
 `
 
 function Arrow(props: ArrowProps) {
   const disabeld = props.disabled ? " arrow--disabled" : "";
   return (
-    <StyledArrowIcon
+    <StyledArrow 
       onClick={props.onClick}
       className={`${
         props.left ? "arrow--left" : "arrow--right"
       } ${disabeld}`}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-    >
-      {props.left && (
-        <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
-      )}
-      {!props.left && (
-        <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
-      )}
-    </StyledArrowIcon>
+      >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        {props.left && (
+          <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+        )}
+        {!props.left && (
+          <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
+        )}
+      </svg>
+    </StyledArrow>
   );
 }

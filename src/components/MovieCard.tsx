@@ -19,6 +19,7 @@ const StyledThumbnail = styled.div<ThumbnailProps>`
   background-image: url(${props => props.backgroundUrl});
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 5px
 `
 
 const StyledContent = styled.div`
