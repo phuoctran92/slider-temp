@@ -111,11 +111,16 @@ interface IconButtonProps {
 const StyledIconButtonContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 const StyledIconButtonLabel = styled.div`
-  color: #fff;
+  color: #d1d7e0;
   font-weight: 500;
   margin-left: 6px;
+  ${StyledIconButtonContainer}:hover & {
+    color: #fff;
+  }
+  
 `
 const StyledIconContainer = styled.div`
   position: relative;
@@ -123,7 +128,7 @@ const StyledIconContainer = styled.div`
   min-height: 32px;
   border: 1px solid rgb(0,204,153);
   border-radius: 50%;
-  &:hover {
+  ${StyledIconButtonContainer}:hover & {
     background-color: #0c9;
     border-color: #0c9;
   }
@@ -133,6 +138,10 @@ const StyledIcon = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 20px;
 `
 
 export function IconButton(props : IconButtonProps) {
@@ -154,7 +163,7 @@ export function IconButton(props : IconButtonProps) {
 
 export function PlayIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 14 14">
           <g fill="none" fill-rule="evenodd">
                 <g>
                     <g>
@@ -174,7 +183,7 @@ export function PlayIcon() {
 } 
 export function PlusIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
       <g fill="none" fill-rule="evenodd">
           <g>
               <g>
@@ -188,7 +197,7 @@ export function PlusIcon() {
 }
 export function ShareIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
     <g fill="none" fill-rule="evenodd">
         <g>
             <g>
