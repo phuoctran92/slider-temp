@@ -1,14 +1,14 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Slider from './components/Slider';
+import React from 'react'
+import logo from './logo.svg'
+import './App.css'
+import { Carousel } from './components/carousel'
 
 function App() {
   return (
     <div className="App">
-      <Slider/>
+      <Carousel />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
